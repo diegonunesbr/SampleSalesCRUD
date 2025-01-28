@@ -73,10 +73,10 @@ See [Frameworks](./doc/frameworks.md)
 ## API Structure
 This section includes links to the detailed documentation for the different API resources:
 - [API General](./doc/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
+- [Products API](./doc/products-api.md)
+- [Carts API](./doc/carts-api.md)
+- [Users API](./doc/users-api.md)
+- [Auth API](./doc/auth-api.md)
 
 
 ## Project Structure
