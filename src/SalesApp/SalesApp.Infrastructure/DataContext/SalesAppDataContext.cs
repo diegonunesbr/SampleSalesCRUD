@@ -5,6 +5,8 @@ namespace SalesApp.Infrastructure.DataContext
 {
     public class SalesAppDataContext: DbContext
     {
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -22,13 +24,29 @@ namespace SalesApp.Infrastructure.DataContext
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.Property(e => e.id).ValueGeneratedOnAdd();
+                entity.Property(e => e.date).IsRequired();
+                entity.HasOne<User>(ci => ci.user).WithMany(f => f.carts).HasForeignKey(ci => ci.userId);
+            });
+
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.HasKey(ci => new { ci.cartId, ci.productId });
+                entity.Property(ci => ci.quantity).IsRequired();
+                entity.HasOne<Cart>(ci => ci.cart).WithMany(f => f.products).HasForeignKey(ci => ci.cartId);
+                entity.HasOne<Product>(ci => ci.product).WithMany(f => f.carts).HasForeignKey(ci => ci.productId);
+            });
+
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.id);
                 entity.Property(e => e.id).ValueGeneratedOnAdd();
                 entity.Property(e => e.title).IsRequired().HasMaxLength(1000);
                 entity.Property(e => e.price).IsRequired().HasPrecision(18, 2);
-                entity.Property(e => e.description).IsRequired().HasMaxLength(5000);
+                entity.Property(e => e.description).IsRequired(false).HasMaxLength(5000);
                 entity.Property(e => e.category).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.image).IsRequired(false).HasMaxLength(5000);
                 entity.ComplexProperty(e => e.rating);
@@ -43,7 +61,6 @@ namespace SalesApp.Infrastructure.DataContext
                 entity.Property(e => e.password).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.phone).IsRequired().HasMaxLength(30);
                 entity.ComplexProperty(e => e.name);
-                entity.ComplexProperty(e => e.address);
                 entity.ComplexProperty(e => e.address, b => b.ComplexProperty(e => e.geolocation));
             });
         }

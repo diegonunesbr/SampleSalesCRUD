@@ -1,13 +1,14 @@
-﻿using SalesApp.Domain.Enums;
+﻿using MediatR;
+using SalesApp.Application.Models;
+using SalesApp.Domain.Entities;
+using SalesApp.Domain.Enums;
 using SalesApp.Domain.ValueObjects;
-using System.Text.Json.Serialization;
 
-namespace SalesApp.Domain.Entities
+namespace SalesApp.Application.Users.Commands
 {
-    public class User
+    public class UpdateUserCommand: IRequest<Result<User>>
     {
         public int id { get; set; }
-
         public string email { get; set; } = string.Empty;
 
         public string username { get; set; } = string.Empty;
@@ -22,8 +23,5 @@ namespace SalesApp.Domain.Entities
         public UserStatus status { get; set; }
 
         public UserRole role { get; set; }
-
-        [JsonIgnore]
-        public ICollection<Cart> carts { get; set; }
     }
 }

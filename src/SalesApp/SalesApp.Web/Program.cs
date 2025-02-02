@@ -16,7 +16,7 @@ namespace SalesApp.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddServices(builder.Configuration);
+            builder.Services.AddEntryPointServices(builder.Configuration);
 
             var app = builder.Build();
 
