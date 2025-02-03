@@ -8,7 +8,7 @@ namespace SalesApp.Application.Interfaces
         void Update(User entity);
         Task<int> DeleteById(int id);
         Task<User?> GetById(int id);
-        Task<List<User>> GetAll();
+        Task<List<User>> GetAll(int page, int size, string order);
         Task<bool> ExistsByUserName(int id, string username);
         Task<bool> ExistsByEmail(int id, string email);
     }

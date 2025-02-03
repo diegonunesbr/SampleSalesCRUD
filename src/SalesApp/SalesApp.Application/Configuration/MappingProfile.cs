@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SalesApp.Application.Products.Commands;
 using SalesApp.Application.Users.Commands;
 using SalesApp.Domain.Entities;
 
@@ -8,6 +9,9 @@ namespace SalesApp.Application.Configuration
     {
         public MappingProfile()
         {
+            CreateMap<CreateProductCommand, Product>();
+            CreateMap<UpdateProductCommand, Product>();
+
             CreateMap<CreateUserCommand, User>();
             CreateMap<UpdateUserCommand, User>();
         }

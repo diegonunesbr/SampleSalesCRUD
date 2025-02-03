@@ -17,6 +17,7 @@ namespace SalesApp.Infrastructure.Configuration
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

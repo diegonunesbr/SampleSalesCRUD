@@ -30,9 +30,13 @@ namespace SalesApp.Infrastructure.Repositories
             return u;
         }
 
-        public async Task<List<User>> GetAll()
+        public async Task<List<User>> GetAll(int page, int size, string order)
         {
-            List<User> l = await Context.Users.ToListAsync();
+            var l = await Context.Users
+                .OrderWithText(order)
+                .Skip(size * (page - 1))
+                .Take(size)
+                .ToListAsync();
             return l;
         }
 

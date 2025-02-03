@@ -2,10 +2,11 @@
 using SalesApp.Application.Models;
 using SalesApp.Domain.Entities;
 
-namespace SalesApp.Application.Users.Queries
+namespace SalesApp.Application.Products.Queries
 {
-    public class GetAllUsersQuery: IRequest<Result<List<User>>>
+    public class GetAllProductsByCategoryNameQuery: IRequest<Result<List<Product>>>
     {
+        public string categoryName { get; set; } = string.Empty;
         public int page { get; set; }
         public int size { get; set; }
         public string order { get; set; } = string.Empty;

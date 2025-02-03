@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SalesApp.Application.Interfaces;
 using SalesApp.Domain.Entities;
 using SalesApp.Infrastructure.DataContext;
 
 namespace SalesApp.Infrastructure.Repositories
 {
-    public class ProductRepository(SalesAppDataContext Context)
+    public class ProductRepository(SalesAppDataContext Context): IProductRepository
     {
-        
+
         public void Add(Product entity)
         {
             Context.Products.Add(entity);
@@ -17,34 +18,48 @@ namespace SalesApp.Infrastructure.Repositories
             Context.Products.Update(entity);
         }
 
-        public int DeleteById(int id)
+        public async Task<int> DeleteById(int id)
         {
-            int rows = Context.Products.Where(x => x.id == id).ExecuteDelete();
+            int rows = await Context.Products.Where(x => x.id == id).ExecuteDeleteAsync();
             return rows;
         }
 
         public async Task<Product?> GetById(int id)
         {
-            Product u = await Context.Products.Where(x => x.id == id).FirstAsync();
-            return u;
+            Product? p = await Context.Products.Where(x => x.id == id).FirstOrDefaultAsync();
+            return p;
         }
 
-        public async Task<List<Product>> GetAll()
+        public async Task<List<Product>> GetAll(int page, int size, string order)
         {
-            List<Product> l = await Context.Products.ToListAsync();
+            var l = await Context.Products
+                .OrderWithText(order)
+                .Skip(size * (page - 1))
+                .Take(size)
+                .ToListAsync();
             return l;
         }
 
         public async Task<List<string>> GetAllCategories()
         {
-            List<string> l = await Context.Products.Select(x => x.category).Distinct().ToListAsync();
+            List<string> l = await Context.Products.Select(x => x.category).OrderBy(x => x).Distinct().ToListAsync();
             return l;
         }
 
-        public async Task<List<Product>> GetAllWithCategory(string category)
+        public async Task<List<Product>> GetAllWithCategory(string category, int page, int size, string order)
         {
-            List<Product> l = await Context.Products.Where(x => x.category == category).ToListAsync();
+            var l = await Context.Products
+                .Where(x => x.category == category)
+                .OrderWithText(order)
+                .Skip(size * (page - 1))
+                .Take(size)
+                .ToListAsync();
             return l;
+        }
+
+        public async Task<bool> ExistsByTitle(int id, string title)
+        {
+            return await Context.Products.AnyAsync(x => x.id != id && x.title == title);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
+using SalesApp.Application.Products.Commands;
+using SalesApp.Application.Products.Commands.Validators;
 using SalesApp.Application.Users.Commands;
 using SalesApp.Application.Users.Commands.Validators;
 
@@ -11,6 +13,9 @@ namespace SalesApp.Application.Configuration
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(typeof(MappingProfile));
+
+            services.AddTransient<IValidator<CreateProductCommand>, CreateProductCommandValidator>();
+            services.AddTransient<IValidator<UpdateProductCommand>, UpdateProductCommandValidator>();
 
             services.AddTransient<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
             services.AddTransient<IValidator<UpdateUserCommand>, UpdateUserCommandValidator>();
