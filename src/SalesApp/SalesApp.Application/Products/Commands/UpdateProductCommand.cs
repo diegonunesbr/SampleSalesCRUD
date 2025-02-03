@@ -2,11 +2,13 @@
 using SalesApp.Application.Models;
 using SalesApp.Domain.Entities;
 using SalesApp.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace SalesApp.Application.Products.Commands
 {
     public class UpdateProductCommand: IRequest<Result<Product>>
     {
+        [JsonIgnore]
         public int id { get; set; }
 
         public string title { get; set; } = string.Empty;

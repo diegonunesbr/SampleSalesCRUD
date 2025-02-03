@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
+using SalesApp.Application.Carts.Commands;
+using SalesApp.Application.Carts.Commands.Validators;
 using SalesApp.Application.Products.Commands;
 using SalesApp.Application.Products.Commands.Validators;
 using SalesApp.Application.Users.Commands;
@@ -13,6 +15,10 @@ namespace SalesApp.Application.Configuration
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(typeof(MappingProfile));
+
+            services.AddTransient<IValidator<CreateCartCommand>, CreateCartCommandValidator>();
+            services.AddTransient<IValidator<UpdateCartCommand>, UpdateCartCommandValidator>();
+            services.AddTransient<IValidator<UseCartItemCommand>, UseCartItemCommandValidator>();
 
             services.AddTransient<IValidator<CreateProductCommand>, CreateProductCommandValidator>();
             services.AddTransient<IValidator<UpdateProductCommand>, UpdateProductCommandValidator>();

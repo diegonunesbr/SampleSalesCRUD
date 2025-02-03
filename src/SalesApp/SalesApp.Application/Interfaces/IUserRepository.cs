@@ -6,6 +6,7 @@ namespace SalesApp.Application.Interfaces
     {
         void Add(User entity);
         void Update(User entity);
+        void Delete(User entity);
         Task<int> DeleteById(int id);
         Task<User?> GetById(int id);
         Task<List<User>> GetAll(int page, int size, string order);

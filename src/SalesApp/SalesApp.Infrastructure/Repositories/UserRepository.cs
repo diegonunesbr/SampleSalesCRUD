@@ -18,6 +18,11 @@ namespace SalesApp.Infrastructure.Repositories
             Context.Users.Update(entity);
         }
 
+        public void Delete(User entity)
+        {
+            Context.Users.Remove(entity);
+        }
+
         public async Task<int> DeleteById(int id)
         {
             int rows = await Context.Users.Where(x => x.id == id).ExecuteDeleteAsync();
