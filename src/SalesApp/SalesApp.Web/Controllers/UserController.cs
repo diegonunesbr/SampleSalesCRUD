@@ -18,9 +18,14 @@ namespace SalesApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsersAsync(int userId)
+        public async Task<IActionResult> GetAllUsersAsync(int _page = 1, int _size = 10, string _order = "")
         {
-            var result = await _mediator.Send(new GetAllUsersQuery());
+            var result = await _mediator.Send(new GetAllUsersQuery()
+            {
+                page = _page,
+                size = _size,
+                order = _order
+            });
             return this.HandleResult(result);
         }
 

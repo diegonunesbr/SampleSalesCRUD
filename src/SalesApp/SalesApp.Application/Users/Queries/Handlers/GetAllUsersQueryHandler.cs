@@ -20,7 +20,7 @@ namespace SalesApp.Application.Users.Queries.Handlers
         {
             try
             {
-                var list = await _userRepository.GetAll();
+                var list = await _userRepository.GetAll(query.page, query.size, query.order);
                 return list;
             } catch(Exception ex)
             {
