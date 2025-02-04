@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SalesApp.Infrastructure.DataContext;
@@ -12,9 +13,11 @@ using SalesApp.Infrastructure.DataContext;
 namespace SalesApp.Infrastructure.Migrations
 {
     [DbContext(typeof(SalesAppDataContext))]
-    partial class SalesAppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20250203232826_Sales2")]
+    partial class Sales2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
