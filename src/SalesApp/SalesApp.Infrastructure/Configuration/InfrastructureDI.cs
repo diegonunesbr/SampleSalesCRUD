@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SalesApp.Application.Interfaces;
 using SalesApp.Infrastructure.DataContext;
+using SalesApp.Infrastructure.Messaging;
 using SalesApp.Infrastructure.Repositories;
 
 namespace SalesApp.Infrastructure.Configuration
@@ -21,6 +22,8 @@ namespace SalesApp.Infrastructure.Configuration
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IMessageBus, MessageBus>();
 
             return services;
         }

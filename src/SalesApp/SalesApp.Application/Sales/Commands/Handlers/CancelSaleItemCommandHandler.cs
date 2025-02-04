@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using SalesApp.Application.Interfaces;
 using SalesApp.Application.Models;
+using SalesApp.Application.Sales.Events;
 using SalesApp.Domain.Entities;
 
 namespace SalesApp.Application.Sales.Commands.Handlers
@@ -9,14 +10,17 @@ namespace SalesApp.Application.Sales.Commands.Handlers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISaleRepository _saleRepository;
+        private readonly IMessageBus _messageBus;
 
         public CancelSaleItemCommandHandler(
             IUnitOfWork unitOfWork,
-            ISaleRepository saleRepository
+            ISaleRepository saleRepository,
+            IMessageBus messageBus
             )
         {
             _unitOfWork = unitOfWork;
             _saleRepository = saleRepository;
+            _messageBus = messageBus;
         }
 
         public async Task<Result<ResultMessage>> Handle(CancelSaleItemCommand command, CancellationToken cancellationToken)
@@ -47,6 +51,13 @@ namespace SalesApp.Application.Sales.Commands.Handlers
 
                 _saleRepository.Update(sale);
                 await _unitOfWork.CommitAsync();
+
+                ItemCancelledEvent evt = new ItemCancelledEvent()
+                {
+                    sale = sale,
+                    cancelledItem = item
+                };
+                _messageBus.Send(evt);
 
                 return new ResultMessage("Sale item cancelled with success.");
             } catch(Exception ex)
