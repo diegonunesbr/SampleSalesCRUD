@@ -43,9 +43,10 @@ namespace SalesApp.Web.Controllers
             return this.HandleResult(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateUserAsync(UpdateUserCommand request)
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> UpdateUserAsync(int userId, [FromBody] UpdateUserCommand request)
         {
+            request.id = userId;
             var result = await _mediator.Send(request);
             return this.HandleResult(result);
         }

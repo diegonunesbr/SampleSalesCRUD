@@ -3,11 +3,13 @@ using SalesApp.Application.Models;
 using SalesApp.Domain.Entities;
 using SalesApp.Domain.Enums;
 using SalesApp.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace SalesApp.Application.Users.Commands
 {
     public class UpdateUserCommand: IRequest<Result<User>>
     {
+        [JsonIgnore]
         public int id { get; set; }
         public string email { get; set; } = string.Empty;
 

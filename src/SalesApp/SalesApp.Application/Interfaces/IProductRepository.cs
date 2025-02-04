@@ -6,6 +6,7 @@ namespace SalesApp.Application.Interfaces
     {
         void Add(Product entity);
         void Update(Product entity);
+        void Delete(Product entity);
         Task<int> DeleteById(int id);
         Task<Product?> GetById(int id);
         Task<List<Product>> GetAll(int page, int size, string order);

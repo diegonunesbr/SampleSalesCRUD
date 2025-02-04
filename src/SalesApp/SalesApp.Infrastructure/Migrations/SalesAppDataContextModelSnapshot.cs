@@ -108,6 +108,77 @@ namespace SalesApp.Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("SalesApp.Domain.Entities.Sale", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("branch")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("status")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("totalDiscountAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("totalProductAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("totalSaleAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("SalesApp.Domain.Entities.SaleItem", b =>
+                {
+                    b.Property<int>("saleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("productId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("discount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("total")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("saleId", "productId");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("SaleItems");
+                });
+
             modelBuilder.Entity("SalesApp.Domain.Entities.User", b =>
                 {
                     b.Property<int>("id")
@@ -223,6 +294,36 @@ namespace SalesApp.Infrastructure.Migrations
                     b.Navigation("product");
                 });
 
+            modelBuilder.Entity("SalesApp.Domain.Entities.Sale", b =>
+                {
+                    b.HasOne("SalesApp.Domain.Entities.User", "user")
+                        .WithMany("sales")
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("SalesApp.Domain.Entities.SaleItem", b =>
+                {
+                    b.HasOne("SalesApp.Domain.Entities.Product", "product")
+                        .WithMany("sales")
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SalesApp.Domain.Entities.Sale", "sale")
+                        .WithMany("products")
+                        .HasForeignKey("saleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+
+                    b.Navigation("sale");
+                });
+
             modelBuilder.Entity("SalesApp.Domain.Entities.Cart", b =>
                 {
                     b.Navigation("products");
@@ -231,11 +332,20 @@ namespace SalesApp.Infrastructure.Migrations
             modelBuilder.Entity("SalesApp.Domain.Entities.Product", b =>
                 {
                     b.Navigation("carts");
+
+                    b.Navigation("sales");
+                });
+
+            modelBuilder.Entity("SalesApp.Domain.Entities.Sale", b =>
+                {
+                    b.Navigation("products");
                 });
 
             modelBuilder.Entity("SalesApp.Domain.Entities.User", b =>
                 {
                     b.Navigation("carts");
+
+                    b.Navigation("sales");
                 });
 #pragma warning restore 612, 618
         }

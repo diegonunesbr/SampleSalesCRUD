@@ -21,5 +21,8 @@ namespace SalesApp.Domain.Entities
 
         [JsonIgnore]
         public ICollection<CartItem> carts { get; set; }
+
+        [JsonIgnore]
+        public ICollection<SaleItem> sales { get; set; }
     }
 }

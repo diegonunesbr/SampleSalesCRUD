@@ -29,7 +29,7 @@ namespace SalesApp.Application.Users.Commands.Handlers
                     return new ResultError(ResultError.ResourceNotFound, "User not found", $"There is no user with id {command.UserId}");
                 }
 
-                await _userRepository.DeleteById(command.UserId);
+                _userRepository.Delete(user);
                 await _unitOfWork.CommitAsync();
 
                 return new ResultMessage("User deleted with success.");

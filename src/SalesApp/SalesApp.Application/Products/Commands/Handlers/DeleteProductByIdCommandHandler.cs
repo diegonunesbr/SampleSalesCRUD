@@ -29,7 +29,7 @@ namespace SalesApp.Application.Products.Commands.Handlers
                     return new ResultError(ResultError.ResourceNotFound, "Product not found", $"There is no product with id {command.ProductId}");
                 }
 
-                await _productRepository.DeleteById(command.ProductId);
+                _productRepository.Delete(product);
                 await _unitOfWork.CommitAsync();
 
                 return new ResultMessage("Product deleted with success.");

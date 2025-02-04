@@ -4,6 +4,7 @@ namespace SalesApp.Domain.Entities
 {
     public class CartItem
     {
+        [JsonIgnore]
         public int cartId { get; set; }
 
         [JsonIgnore]
